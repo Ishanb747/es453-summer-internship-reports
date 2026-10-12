@@ -110,7 +110,7 @@ def report2():
                     ("", False)):
         L.para(d, t, bold=bold, align=WD_ALIGN_PARAGRAPH.LEFT, space_after=2)
     p = L.para(d, "", align=WD_ALIGN_PARAGRAPH.LEFT, space_after=2)
-    p.add_run().add_picture(R.SIG, height=L.Cm(0.9))
+    p.add_run().add_picture(R.SIG, height=L.Cm(0.5))
     for t in (STUDENT["name"], STUDENT["roll"]):
         L.para(d, t, align=WD_ALIGN_PARAGRAPH.LEFT, space_after=2)
 

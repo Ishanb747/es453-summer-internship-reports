@@ -93,7 +93,7 @@ def declaration(d, heading="DECLARATION"):
               f"under the guidance of {ORG['mentor']}, {ORG['mentor_desig']}, {ORG['name']}, Singapore.")
     L.para(d, "")
     p = L.para(d, "Signature of Student: ", align=WD_ALIGN_PARAGRAPH.LEFT, space_after=2)
-    p.add_run().add_picture(SIG, height=Cm(0.8))
+    p.add_run().add_picture(SIG, height=Cm(0.5))
     for t in (f"Name of Student: {STUDENT['name']}",
               f"University Roll No.: {STUDENT['roll']}",
               f"Date: {STUDENT['sign_date']}"):

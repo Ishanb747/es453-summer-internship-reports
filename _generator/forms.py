@@ -55,7 +55,7 @@ def set_cell(cell, text, bold=None):
 SIG = "/private/tmp/claude-501/-Users-ishan-Documents-New-project-Summer-Intern-report/76f2bf2a-0fb3-4818-a4c4-dc9469e7c347/scratchpad/sig2/ishan_signature.png"
 
 
-def sign(d, label, height_cm=0.75):
+def sign(d, label, height_cm=0.42):
     """Replace the underscore blank right after `label` with the student's signature image."""
     import re
     for p in all_pars(d):
@@ -376,6 +376,6 @@ def checklist():
             set_par(p, p.text.replace("☐", TICK, 1))
     replace(d, "Student Signature: ____________________   Date: __________",
             f"Student Signature: ____________________   Date: {STUDENT['sign_date']}")
-    sign(d, "Student Signature:", height_cm=0.45)
+    sign(d, "Student Signature:", height_cm=0.35)
     compact(d, grow=-1.5)
     return d
