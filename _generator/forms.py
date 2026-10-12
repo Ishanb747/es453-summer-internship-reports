@@ -79,6 +79,23 @@ def sign(d, label, height_cm=0.42):
     raise KeyError(label)
 
 
+
+def typed_sig(d, prefix, name, date):
+    """Typed e-signature line for an approver who authorised it."""
+    for p in d.paragraphs:
+        if p.text.strip().startswith(prefix):
+            keep = _size_run(p.runs); size = keep.font.size if keep is not None else None; bold = keep.bold if keep is not None else None
+            for r in p.runs:
+                r._r.getparent().remove(r._r)
+            def add(t, italic=False, b=bold):
+                r = p.add_run(t); r.font.size = size; r.bold = b; r.italic = italic; r.font.name = "Times New Roman"
+            add(prefix + " ")
+            add(f"/s/ {name}", italic=True, b=True)
+            add(" (digitally approved)   ", italic=True, b=False)
+            add(f"Name: {name}   Date: {date}")
+            return True
+    raise KeyError(prefix)
+
 def all_pars(d):
     for p in d.paragraphs:
         yield p
@@ -253,9 +270,7 @@ def logbook(week):
     sign(d, "Student Signature:")
     startswith(d, "Industry Mentor / Research Supervisor Remarks:",
                f"Industry Mentor / Research Supervisor Remarks: {week.get('mentor_remark', 'Work completed as planned; good progress this week.')}")
-    for p in d.paragraphs:
-        if p.text.strip().startswith("Signature: ___") and "Date: ___" in p.text:
-            set_par(p, f"Signature: ______________________   Name: {ORG['mentor']}   Date: {week['to']}")
+    typed_sig(d, "Signature:", ORG["mentor"], week["to"])
     compact(d, grow=0.0)
     return d
 
@@ -272,9 +287,7 @@ def mentor_feedback():
     c = t2.rows[3].cells[1]; set_cell(c, c.text.replace("☐ Completed Successfully", TICK + " Completed Successfully"))
     set_cell(t2.rows[4].cells[1], "Learns new tools quickly; careful attention to UI detail and data correctness; responds well to review feedback; took ownership of chart and raw-data features.")
     set_cell(t2.rows[5].cells[1], "Break large changes into smaller pull requests from the start and write automated tests alongside new features.")
-    for p in d.paragraphs:
-        if p.text.strip().startswith("Signature of Industry Mentor"):
-            set_par(p, f"Signature of Industry Mentor: ______________________   Name: {ORG['mentor']}   Date: {MENTOR_DATE}")
+    typed_sig(d, "Signature of Industry Mentor / Research Supervisor:", ORG["mentor"], MENTOR_DATE)
     compact(d, grow=0.0)
     return d
 
