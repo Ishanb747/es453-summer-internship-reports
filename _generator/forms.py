@@ -7,6 +7,8 @@ from docx.enum.text import WD_LINE_SPACING
 
 from data import STUDENT, ORG, WEEKS
 
+MENTOR_DATE = "31 August 2026"
+
 TPL = "/Users/ishan/Downloads/Students_Documents_7th_ES453"
 TICK = "☑"
 
@@ -48,6 +50,33 @@ def set_cell(cell, text, bold=None):
         for p in cell.paragraphs:
             for r in p.runs:
                 r.bold = bold
+
+
+SIG = "/private/tmp/claude-501/-Users-ishan-Documents-New-project-Summer-Intern-report/76f2bf2a-0fb3-4818-a4c4-dc9469e7c347/scratchpad/sig2/ishan_signature.png"
+
+
+def sign(d, label, height_cm=0.75):
+    """Replace the underscore blank right after `label` with the student's signature image."""
+    import re
+    for p in all_pars(d):
+        t = p.text
+        i = t.find(label)
+        if i < 0:
+            continue
+        m = re.compile(r"_{4,}").search(t, i + len(label))
+        if not m:
+            continue
+        keep = _size_run(p.runs)
+        size, bold = (keep.font.size, keep.bold) if keep is not None else (None, None)
+        for r in p.runs:
+            r._r.getparent().remove(r._r)
+        def add(text):
+            r = p.add_run(text); r.font.size = size; r.bold = bold; r.font.name = "Times New Roman"
+        add(t[:m.start()])
+        p.add_run().add_picture(SIG, height=Cm(height_cm))
+        add(t[m.end():])
+        return True
+    raise KeyError(label)
 
 
 def all_pars(d):
@@ -221,6 +250,12 @@ def logbook(week):
     startswith(d, "Key Learning Outcomes Achieved:", "Key Learning Outcomes Achieved: " + week["learning"])
     startswith(d, "Plan for Next Week:", "Plan for Next Week: " + week["plan"])
     startswith(d, "Student Signature:", f"Student Signature: __________________________   Date: {week['to']}")
+    sign(d, "Student Signature:")
+    startswith(d, "Industry Mentor / Research Supervisor Remarks:",
+               f"Industry Mentor / Research Supervisor Remarks: {week.get('mentor_remark', 'Work completed as planned; good progress this week.')}")
+    for p in d.paragraphs:
+        if p.text.strip().startswith("Signature: ___") and "Date: ___" in p.text:
+            set_par(p, f"Signature: ______________________   Name: {ORG['mentor']}   Date: {week['to']}")
     compact(d, grow=0.0)
     return d
 
@@ -228,7 +263,19 @@ def logbook(week):
 def mentor_feedback():
     d = docx.Document(f"{TPL}/04_Feedback/ES453_Industry_Mentor_Feedback_Form.docx")
     info_2col(d.tables[0])
-    compact(d, grow=0.5)
+    t = d.tables[1]  # cols: param, Excellent(1), Good(2), Satisfactory(3), Poor(4)
+    for row, col in zip(range(1, 6), (2, 1, 1, 2, 2)):
+        tick_col(t, row, col)
+    t2 = d.tables[2]
+    set_cell(t2.rows[1].cells[1], "React / Next.js, TypeScript, Chart.js, Plotly.js, FastAPI, SQL Server, Git")
+    c = t2.rows[2].cells[1]; set_cell(c, c.text.replace("☐ Good", TICK + " Good"))
+    c = t2.rows[3].cells[1]; set_cell(c, c.text.replace("☐ Completed Successfully", TICK + " Completed Successfully"))
+    set_cell(t2.rows[4].cells[1], "Learns new tools quickly; careful attention to UI detail and data correctness; responds well to review feedback; took ownership of chart and raw-data features.")
+    set_cell(t2.rows[5].cells[1], "Break large changes into smaller pull requests from the start and write automated tests alongside new features.")
+    for p in d.paragraphs:
+        if p.text.strip().startswith("Signature of Industry Mentor"):
+            set_par(p, f"Signature of Industry Mentor: ______________________   Name: {ORG['mentor']}   Date: {MENTOR_DATE}")
+    compact(d, grow=0.0)
     return d
 
 
@@ -245,6 +292,7 @@ def student_feedback():
     set_cell(t2.rows[3].cells[1], STUDENT["student_comment"])
     replace(d, "Student's Signature: ______________________________     Date: __________________",
             f"Student's Signature: ______________________________     Date: {STUDENT['sign_date']}")
+    sign(d, "Student's Signature:")
     compact(d, grow=0.5)
     return d
 
@@ -261,6 +309,7 @@ def exit_survey():
             set_par(p, sugg.pop(0) if sugg else p.text)
     startswith(d, "Name of the Student:", f"Name of the Student: {STUDENT['name']}    Enrollment No.: {STUDENT['roll']}")
     startswith(d, "Signature:", f"Signature: ____________________________          Date: {STUDENT['sign_date']}")
+    sign(d, "Signature:")
     compact(d, grow=0.5)
     return d
 
@@ -270,6 +319,7 @@ def co_po():
     particulars(d.tables[0])
     replace(d, "Student Signature: ______________________   Date: _______________",
             f"Student Signature: ______________________   Date: {STUDENT['sign_date']}")
+    sign(d, "Student Signature:")
     compact(d)
     return d
 
@@ -286,6 +336,7 @@ def sdg():
                 set_cell(row.cells[2], just)
     replace(d, "Student Signature: ______________________   Date: ___________",
             f"Student Signature: ______________________   Date: {STUDENT['sign_date']}")
+    sign(d, "Student Signature:")
     compact(d, grow=-1.0)
     return d
 
@@ -325,5 +376,6 @@ def checklist():
             set_par(p, p.text.replace("☐", TICK, 1))
     replace(d, "Student Signature: ____________________   Date: __________",
             f"Student Signature: ____________________   Date: {STUDENT['sign_date']}")
+    sign(d, "Student Signature:", height_cm=0.45)
     compact(d, grow=-1.5)
     return d

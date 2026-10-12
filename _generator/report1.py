@@ -11,6 +11,7 @@ C = WD_ALIGN_PARAGRAPH.CENTER
 
 
 LOGO = f"{SP}/logo/mait.jpg"
+SIG = f"{SP}/sig2/ishan_signature_body.png"
 
 
 def cover(d, report_title):
@@ -35,7 +36,7 @@ def cover(d, report_title):
     line([("Name of Student: ", False, False), (STUDENT["name"], True, True)], 13, after=2)
     line([("Enrollment No.: ", False, False), (f"{STUDENT['roll']} ({STUDENT['group'].replace('-', '')})", True, True)], 13, after=18)
     line([("Under the Guidance of:", False, False)], 13, after=2)
-    line([("Faculty Guide: ", False, False), ("______________________", True, True)], 13, after=2)
+    line([("Faculty Guide: ", False, False), (STUDENT["counsellor"], True, True)], 13, after=2)
     line([("Industry Mentor: ", False, False), (f"{ORG['mentor']}, {ORG['name']}", True, True)], 13, after=2)
     line([("Head of Department: ", False, False), ("Prof. (Dr.) Amita Goel", True, True)], 13, after=30)
     line([("SUBMITTED TO:", True, False)], 14, after=2)
@@ -91,8 +92,9 @@ def declaration(d, heading="DECLARATION"):
               f"{STUDENT['weeks']} weeks Training during the period from 5 May 2026 to 31 August 2026 for the award of degree of B.Tech. (Information Technology), GGSIPU, "
               f"under the guidance of {ORG['mentor']}, {ORG['mentor_desig']}, {ORG['name']}, Singapore.")
     L.para(d, "")
-    for t in ("Signature of Student: ______________________________",
-              f"Name of Student: {STUDENT['name']}",
+    p = L.para(d, "Signature of Student: ", align=WD_ALIGN_PARAGRAPH.LEFT, space_after=2)
+    p.add_run().add_picture(SIG, height=Cm(0.8))
+    for t in (f"Name of Student: {STUDENT['name']}",
               f"University Roll No.: {STUDENT['roll']}",
               f"Date: {STUDENT['sign_date']}"):
         L.para(d, t, align=WD_ALIGN_PARAGRAPH.LEFT, space_after=2)
@@ -101,7 +103,7 @@ def declaration(d, heading="DECLARATION"):
     L.para(d, "Examined by:", bold=True)
     L.para(d, "")
     L.para(d, "1. ______________________________          2. ______________________________", align=WD_ALIGN_PARAGRAPH.LEFT, space_after=0)
-    L.para(d, "    Industry Mentor / Research Supervisor            Faculty Counsellor", align=WD_ALIGN_PARAGRAPH.LEFT)
+    L.para(d, f"    Industry Mentor ({ORG['mentor']})            Faculty Counsellor ({STUDENT['counsellor']})", align=WD_ALIGN_PARAGRAPH.LEFT)
     L.para(d, "")
     L.para(d, "Head of Department (Signature and Seal): ______________________________", align=WD_ALIGN_PARAGRAPH.LEFT)
 
@@ -116,7 +118,7 @@ def acknowledgement(d):
               "General Affairs, for their support with the internship formalities, and all members of the team who answered my questions about solar "
               "performance analysis and the portal codebase.")
     L.para(d, "I am grateful to Prof. (Dr.) Amita Goel, Head of the Department of Information Technology, Maharaja Agrasen Institute of Technology, "
-              "Mr. Ajay Kumar Kaushik, Summer Training Coordinator, and my Faculty Counsellor for their guidance on the ES-453 training process and this report.")
+              "Mr. Ajay Kumar Kaushik, Summer Training Coordinator, and my Faculty Counsellor, Sunil Maggu, for their guidance on the ES-453 training process and this report.")
     L.para(d, "Finally, I thank my family and friends for their constant encouragement.")
     L.para(d, "")
     L.para(d, STUDENT["name"], bold=True, align=WD_ALIGN_PARAGRAPH.RIGHT, space_after=0)

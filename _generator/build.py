@@ -107,8 +107,12 @@ def report2():
                     ("Department: Information Technology", False), ("", False),
                     ("Regarding: NOC for Summer Internship/Training at PV Doctor (Singapore, Remote)", True), ("", False),
                     ("This internship was fully remote, and the company (PV Doctor) did not require or ask for a No Objection Certificate as part of onboarding. Hence, no NOC was obtained.", False),
-                    ("", False), ("", False), ("______________________________", False), (STUDENT["name"], False), (STUDENT["roll"], False)):
+                    ("", False)):
         L.para(d, t, bold=bold, align=WD_ALIGN_PARAGRAPH.LEFT, space_after=2)
+    p = L.para(d, "", align=WD_ALIGN_PARAGRAPH.LEFT, space_after=2)
+    p.add_run().add_picture(R.SIG, height=L.Cm(0.9))
+    for t in (STUDENT["name"], STUDENT["roll"]):
+        L.para(d, t, align=WD_ALIGN_PARAGRAPH.LEFT, space_after=2)
 
     L.h1(d, "5. INDUSTRY MENTOR AND ORGANISATION DETAILS")
     L.table(d, ["Particular", "Details"], [
