@@ -1,0 +1,10 @@
+set -e
+cd /private/tmp/claude-501/-Users-ishan-Documents-New-project-Summer-Intern-report/76f2bf2a-0fb3-4818-a4c4-dc9469e7c347/scratchpad/build
+rm -f /private/tmp/claude-501/-Users-ishan-Documents-New-project-Summer-Intern-report/76f2bf2a-0fb3-4818-a4c4-dc9469e7c347/scratchpad/pages.json
+for pass in 1 2; do
+  /private/tmp/claude-501/-Users-ishan-Documents-New-project-Summer-Intern-report/76f2bf2a-0fb3-4818-a4c4-dc9469e7c347/scratchpad/venv/bin/python build.py /private/tmp/claude-501/-Users-ishan-Documents-New-project-Summer-Intern-report/76f2bf2a-0fb3-4818-a4c4-dc9469e7c347/scratchpad/out /private/tmp/claude-501/-Users-ishan-Documents-New-project-Summer-Intern-report/76f2bf2a-0fb3-4818-a4c4-dc9469e7c347/scratchpad/pages.json
+  soffice -env:UserInstallation=file:///private/tmp/claude-501/-Users-ishan-Documents-New-project-Summer-Intern-report/76f2bf2a-0fb3-4818-a4c4-dc9469e7c347/scratchpad/loprofile --headless --invisible --norestore "vnd.sun.star.script:finalize.py\$run?language=Python&location=user" >/dev/null 2>&1
+  if [ $pass = 1 ]; then /private/tmp/claude-501/-Users-ishan-Documents-New-project-Summer-Intern-report/76f2bf2a-0fb3-4818-a4c4-dc9469e7c347/scratchpad/venv/bin/python pagemap.py /private/tmp/claude-501/-Users-ishan-Documents-New-project-Summer-Intern-report/76f2bf2a-0fb3-4818-a4c4-dc9469e7c347/scratchpad/build /private/tmp/claude-501/-Users-ishan-Documents-New-project-Summer-Intern-report/76f2bf2a-0fb3-4818-a4c4-dc9469e7c347/scratchpad/out/R1_final.pdf /private/tmp/claude-501/-Users-ishan-Documents-New-project-Summer-Intern-report/76f2bf2a-0fb3-4818-a4c4-dc9469e7c347/scratchpad/out/R2_final.pdf /private/tmp/claude-501/-Users-ishan-Documents-New-project-Summer-Intern-report/76f2bf2a-0fb3-4818-a4c4-dc9469e7c347/scratchpad/pages.json >/dev/null; fi
+done
+cat /private/tmp/claude-501/-Users-ishan-Documents-New-project-Summer-Intern-report/76f2bf2a-0fb3-4818-a4c4-dc9469e7c347/scratchpad/pages.json | tr -d '\n' | cut -c1-600; echo
+for f in R1_final R2_final; do pdfinfo /private/tmp/claude-501/-Users-ishan-Documents-New-project-Summer-Intern-report/76f2bf2a-0fb3-4818-a4c4-dc9469e7c347/scratchpad/out/$f.pdf | grep Pages; done
