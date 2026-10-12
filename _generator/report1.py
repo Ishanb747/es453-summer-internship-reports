@@ -210,15 +210,11 @@ def chapter1(d):
         ["Designation", "Data Analytics Intern (Web Development of the Monitoring Portal)"],
         ["Duration", "5 May 2026 – 31 August 2026 (17 weeks)"],
         ["Mode", "Remote (work from home, India)"],
-        ["Working hours", "9 am – 6 pm, Monday to Friday until 31 July; about 4 hours per day in August"],
-        ["Stipend", "INR 20,000 per month"],
         ["Project", STUDENT["title"]],
     ], widths=[4, 12], title="Internship details")
-    L.para(d, "The internship agreement (Appendix A of the agreement) defined the scope of work as: designing and developing PV Doctor's Monitoring Portal, including "
-              "dashboards and core user interface components; building responsive front-end applications in React with data-visualisation libraries; integrating the "
-              "front end with backend services powered by FastAPI; following clean-architecture principles with attention to performance, scalability and reliability; "
-              "and taking end-to-end ownership of assigned features from requirement analysis to delivery. The original term was 5 May to 31 July 2026; it was extended "
-              "to 31 August 2026 on a part-time basis, as recorded in the company's internship certificate.")
+    L.para(d, "Per the internship agreement, the scope was to design and develop PV Doctor's Monitoring Portal – dashboards, React front-end "
+              "components with data-visualisation libraries, and FastAPI integration – with end-to-end ownership of assigned features. The term "
+              "was later extended from 31 July to 31 August 2026 on a part-time basis.")
     L.h2(d, "1.3 Objectives")
     L.bullets(d, [
         "Understand the solar PV monitoring domain – the meaning of yield, irradiation, PR, CoV and corridor analysis – well enough to present them correctly.",
@@ -233,9 +229,8 @@ def chapter1(d):
               "work at the level of features, design decisions and algorithms, uses generic descriptions instead of client site names, and uses the public material "
               "from portal.pv.doctor and the company website for illustrations.")
     L.h2(d, "1.5 Organisation of the Report")
-    L.para(d, "Chapter 2 describes the tools and technologies used. Chapter 3 presents the technical work module by module. Chapter 4 contains screenshots and "
-              "visuals of the portal. Chapter 5 discusses the results and challenges, and Chapter 6 concludes with future scope. The weekly jobs summary, learning "
-              "outcomes, references and the prescribed appendices (weekly logbooks, feedback forms, exit survey, CO–PO/PSO and SDG mapping) follow.")
+    L.para(d, "Chapter 2 covers tools and technologies, Chapter 3 the work performed, Chapter 4 screenshots, Chapter 5 results "
+              "and Chapter 6 conclusions, followed by the weekly summary, learning outcomes, references and appendices.")
 
 
 def chapter2(d):
@@ -291,9 +286,7 @@ def chapter2(d):
         "**Irradiation vs irradiance** – irradiance is instantaneous power (W/m²); irradiation is energy over time (kWh/m²). The portal labels were corrected to use the right term.",
         "**CO₂ avoided** – energy generated multiplied by a grid emission factor; shown per site in Portfolio Overview.",
     ])
-    L.figure(d, f"{DIA}/fig_workflow.png", "Development workflow followed for every task")
-    L.para(d, "Every task followed the workflow in Figure 3: requirement from Jira or a review comment, analysis of the existing component and API, implementation "
-              "on a feature branch, testing across date ranges, sites and screen sizes, a pull request reviewed by the team, and verification on staging before release.")
+
 
 
 def chapter3(d):
@@ -490,6 +483,8 @@ def chapter5(d):
     L.para(d, "**Correctness before decoration.** The most important changes were often small: a wrong unit, an off-by-one in a date range, or a decimal rounding issue. "
               "Because O&M engineers act on these numbers, fixing them had more value than adding new visual features. Writing the period rules down as a table (Table 7) "
               "turned a stream of individual bug reports into one consistent behaviour.")
+    L.para(d, "Every task followed the same workflow, shown below: a Jira requirement, analysis, implementation, testing, code review and staging before release.", keep=True)
+    L.figure(d, f"{DIA}/fig_workflow.png", "Development workflow followed for every task")
     L.para(d, "**Iterative review.** Most features went through two to four review rounds. Early in the internship this felt slow, but it produced a consistent "
               "product and taught me to anticipate questions – such as how a chart behaves for a single day, a single year or a site with only one inverter – before "
               "submitting work.")
@@ -500,7 +495,6 @@ def chapter5(d):
     L.h2(d, "5.3 Challenges Faced")
     L.table(d, ["Challenge", "How it was handled"], [
         ["Learning a new domain (PV performance) quickly", "Studied IEC 61724 KPIs and asked the team to explain each chart's purpose before changing it."],
-        ["Large existing codebase", "Read the existing component and its API before each change; kept changes small and focused."],
         ["Date and time-zone edge cases", "Built a test matrix of period selections (Today, CM, LY, LT, custom ranges) and checked each chart against it."],
         ["Remote collaboration across time zones", "Written updates in the task tracker, clear pull-request descriptions and screenshots for reviewers."],
         ["Site-specific data issues", "Reproduced using the affected site's data, then generalised the fix (e.g. multi-site reference sensors)."],
@@ -554,13 +548,11 @@ def learning_outcomes(d):
         "Designing consistent date-range and aggregation logic and testing it systematically.",
         "Developing REST APIs in FastAPI, writing efficient SQL access with batching, parallel queries and caching, and writing automated API tests.",
         "Refactoring for maintainability: removing duplication, extracting shared components and keeping pull requests small.",
-        "Solar PV performance analysis: yield, irradiation, PR, CoV, corridors and the role of satellite irradiance.",
     ])
     L.h2(d, "Professional Learning")
     L.bullets(d, [
         "Working in a remote, international team with written communication, task trackers and code review.",
         "Taking ownership of a feature from requirement to release, including staging verification.",
-        "Handling confidential client data responsibly.",
         "Managing time between internship work and academic commitments.",
     ])
     L.h2(d, "Mapping to Course Outcomes (ES-453)")
@@ -569,7 +561,7 @@ def learning_outcomes(d):
         ["CO2", "Design or assist in implementing solutions using specific technologies.", "Designed and implemented chart components, period rules, raw-data APIs and refactors (Web Development, data engineering)."],
         ["CO3", "Use tools, platforms or frameworks relevant to the domain efficiently.", "Next.js, React, TypeScript, Chart.js, Plotly, FastAPI, SQL Server, Git, Jira, Nginx."],
         ["CO4", "Prepare comprehensive technical reports and presentations.", "Weekly task tracker entries, pull-request descriptions, this report and the viva presentation."],
-    ], widths=[1.3, 6.2, 8.5], title="Mapping of internship work to ES-453 course outcomes")
+    ], widths=[1.3, 6.2, 8.5], title="Mapping of internship work to ES-453 course outcomes", size=10)
 
 
 def references(d):
